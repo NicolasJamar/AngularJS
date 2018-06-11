@@ -15,55 +15,51 @@
         <![endif]-->
 
     </head>
-    <body ng-app="Webmail">
+    <body ng-app="Webmail" ng-controller="WebmailCtrl">
 
         <div class="container">
 
             <ul class="nav nav-pills spacer">
-                <li class="active"><a href="">Boîte de réception</a></li>
-                <li><a href="">Courrier indésirable</a></li>
-                <li><a href="">Brouillon</a></li>
-                <li><a href="">Envoyé</a></li>
+                <li ng-repeat="dossier in dossiers" ng-class="{ active : dossier == dossierCourant }">
+                    <a href="#{{dossier.value}}" ng-click="selectionDossier(dossier)">{{dossier.label}}</a>
+                </li>
             </ul>
-
             <div ng-show="dossierCourant != null &amp;&amp; emailSelectionne == null">
                 <table class="table table-striped table-hover spacer">
-                <thead>
-                    <tr>
-                        <th>De</th>
-                        <th>&Agrave;</th>
-                        <th>Objet</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="clickable">
-                        <td>Toto</td>
-                        <td>Rudy</td>
-                        <td>Bonjour</td>
-                        <td>22/03/2014</td>
-                    </tr>
-                    <tr class="clickable">
-                        <td>Alva</td>
-                        <td>Tatiana</td>
-                        <td>Hola</td>
-                        <td>27/07/2015</td>
-                    </tr>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <a ng-click="triParExpediteur()">De</a>
+                            </th>
+                            <th>
+                               <a ng-click="triParDestinataire()"> &Agrave; </a>
+                           </th>
+                            <th>Objet</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="email in dossierCourant.emails | orderBy:champTri" ng-click="versEmail(dossierCourant, email)" class="clickable">
+                            <td>{{email.from}}</td>
+                            <td>{{email.to}}</td>
+                            <td>{{email.subject}}</td>
+                            <td>{{email.date}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <div class="alert alert-info">Le dossier contient {{nbMails}} mails.</div>
+                <div class="alert alert-info">Le dossier contient {{dossierCourant.emails.length}} mails.</div>
             </div>
             
-            <div class="spacer">
+            <div ng-show="emailSelectionne != null" class="spacer">
                 <div class="well">
-                    <h1>Bonjour</h1>
-                    <p><label>De :</label> <span>Toto</span></p>
-                    <p><label>&Agrave; :</label> <span>Rudy</span></p>
-                    <p><label>Date :</label> <span>22/03/2014</span></p>
+                    <h1>{{emailSelectionne.subject}}</h1>
+                    <p><label>De :</label> <span>{{emailSelectionne.from}}</span></p>
+                    <p><label>&Agrave; :</label> <span>{{emailSelectionne.to}}</span></p>
+                    <p><label>Date :</label> <span>{{emailSelectionne.date}}</span></p>
                 </div>
 
-                <p> Salut, ça va ?</p>
+                <p ng-bind-html="emailSelectionne.content"></p>
             </div>
 
         </div>
