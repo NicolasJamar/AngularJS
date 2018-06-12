@@ -70,6 +70,9 @@ angular.module("Webmail", ["ngSanitize"])
     		$scope.recherche = null;
     }
 
+    //création d'e-mails
+    $scope.nouveauMail = null;
+
 	//Pour garder le chemin de navigation
 	//On va le mettre dans l'URL
 	$scope.$watch(function () {

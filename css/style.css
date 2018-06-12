@@ -6,8 +6,8 @@
 	margin-top: 20px;
 }
 
-.hSpacer{
-	margin-left: 15px;
+.hSpacer {
+	margin-left: 20px;
 }
 
 .table-hover > tbody > tr:hover > td,
@@ -20,11 +20,38 @@
 	cursor: pointer;
 }
 
-.thDe, .thA{
+.colDe {
+	width: 20%;
+}
+
+.colA {
 	width: 15%;
 }
 
-.surbrillanceRecherche{
-	font-weight: bold;
+.colObjet {
+	width: 45%;
+}
+
+.colDate {
+	width: 15%;
+}
+
+.surbrillanceRecherche {
 	background-color: #FFD42A;
+}
+
+.labelChampNouveauMail {
+	width: 70px;
+}
+
+.input-group {
+	width: 100%;
+}
+
+.contenuNouveauMail {
+	width: 100%;
+}
+
+input.ng-invalid {
+	background-color: rgba(255, 0, 0, 0.5);
 }

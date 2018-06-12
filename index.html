@@ -18,17 +18,18 @@
     <body ng-app="Webmail" ng-controller="WebmailCtrl">
 
         <div class="container">
-
-            <div class="spacer">
-                <ul class="nav nav-pills spacer">
+            <div class="spacer navbar">
+                <ul class="nav nav-pills navbar-left">
                     <li ng-repeat="dossier in dossiers" ng-class="{ active : dossier == dossierCourant }">
                         <a href="#{{dossier.value}}" ng-click="selectionDossier(dossier)">{{dossier.label}}</a>
                     </li>
                 </ul>
+                <ul class="nav nav-pills navbar-right">
+                    <li ng-class="{ active: nouveauMail != null }">
+                        <a href="#/nouveauMail"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </li>
+                </ul>
             </div>
-            
-            
-            
 
             <div ng-show="dossierCourant != null &amp;&amp; emailSelectionne == null">
                 <!-- Champ de recherche email -->
@@ -92,9 +93,8 @@
 
         </div>
 
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.29/angular-sanitize.min.js"></script>
-        sc
+         <script type="text/javascript" src="lib/angular-1.2.29/angular.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.29/angular-sanitize.min.js"></script>
         <script type="text/javascript" src="js/app.js"></script>        
 
     </body>
