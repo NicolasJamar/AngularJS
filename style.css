@@ -6,6 +6,10 @@
 	margin-top: 20px;
 }
 
+.hSpacer{
+	margin-left: 15px;
+}
+
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #428BCA;
@@ -14,4 +18,13 @@
 
 .clickable {
 	cursor: pointer;
+}
+
+.thDe, .thA{
+	width: 15%;
+}
+
+.surbrillanceRecherche{
+	font-weight: bold;
+	background-color: #FFD42A;
 }
