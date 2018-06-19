@@ -28,6 +28,8 @@ angular.module("Webmail", ["ngSanitize"])
 		] }
 	];
 
+	$scope.idProchainMail = 12;
+
 	$scope.dossierCourant = null;
 	$scope.emailSelectionne = null;
 
@@ -38,6 +40,9 @@ angular.module("Webmail", ["ngSanitize"])
 	$scope.selectionDossier = function(dossier) {
 		$scope.dossierCourant = dossier; //on donne la valeur à dossierCourant en ng-cliquant sur le dossier (voir <a>)
 		$scope.emailSelectionne = null;
+		if(dossier) {
+			$scope.nouveauMail = null;
+		}
 	}
 	
 	$scope.selectionEmail = function(email) {
@@ -72,6 +77,43 @@ angular.module("Webmail", ["ngSanitize"])
 
     //création d'e-mails
     $scope.nouveauMail = null;
+    $scope.razMail = function () {  
+		$scope.nouveauMail = {  //création d'un nouveau mail avec les critères suivants
+		from: "Nico",
+		date: new Date()
+		};
+		//pour cacher le button 'Effacer la saisie'
+		$scope.formNouveauMail.$setPristine();
+	}
+
+	//envoi d'e-mail
+	//On doit ajouter l'email dans le dossier 'envoyé'
+	$scope.envoiMail = function() {
+
+		//vérifier si adresse email valide
+		var regExpValidEmail = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", "gi");
+
+		//si le champ 'email' est vide ou ne match pas avec une adress email valide
+		if (!$scope.nouveauMail.to || !$scope.nouveauMail.to.match(regExpValidEmail) ) {
+			window.alert("Erreur\n\nEmail invalide");
+			return;
+		}
+
+		if (!$scope.nouveauMail.subject) {
+			if ( !window.confirm ("email sans objet")){
+				return;
+			}
+		}
+		$scope.dossiers.forEach( function(item) {
+			if( item.value == "ENVOYES"){
+				$scope.nouveauMail.id = $scope.idProchainMail++;
+				item.emails.push($scope.nouveauMail);
+				$scope.nouveauMail = null;
+				$location.path("/");
+			}
+		})
+	}
+
 
 	//Pour garder le chemin de navigation
 	//On va le mettre dans l'URL
@@ -81,19 +123,24 @@ angular.module("Webmail", ["ngSanitize"])
 		var tabPath = newPath.split("/"); //on récupère le path sous forme d'un tableau dont la 1ère valeur est vide
 		
 		if (tabPath.length > 1) {  //si la valeur est > 1, c'est qu'il y a un élément dans le tableau
-			var valDossier = tabPath[1]; //La valeur du dossier est en 2e position
-			$scope.dossiers.forEach(function (item) {
-				if (item.value == valDossier) {  //si la valeur du dossier = ...
-					$scope.selectionDossier(item); //exécute la function
-				}
-			});
-			if (tabPath.length > 2) {  //si la valeur est > 2, c'est que l'Id d'un email est sélectionné
-				var idMail = tabPath[2];
-				$scope.dossierCourant.emails.forEach(function (item){
-					if (item.id == idMail) {
-						$scope.selectionEmail(item);
+			if(tabPath[1] == "nouveauMail") { //si le path est sur nouveauMail
+				$scope.razMail();
+				$scope.selectionDossier(null);
+			} else{
+				var valDossier = tabPath[1]; //La valeur du dossier est en 2e position
+				$scope.dossiers.forEach(function (item) {
+					if (item.value == valDossier) {  //si la valeur du dossier = ...
+						$scope.selectionDossier(item); //exécute la function
 					}
 				});
+				if (tabPath.length > 2) {  //si la valeur est > 2, c'est que l'Id d'un email est sélectionné
+					var idMail = tabPath[2];
+					$scope.dossierCourant.emails.forEach(function (item){
+						if (item.id == idMail) {
+							$scope.selectionEmail(item);
+						}
+					});
+				}
 			}
 		}
 		
